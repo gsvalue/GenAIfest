@@ -1,0 +1,4 @@
+package com.vm.policy.model;
+
+public class Claim {
+}

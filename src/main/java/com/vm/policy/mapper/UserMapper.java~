@@ -1,0 +1,19 @@
+package com.vm.policy.mapper;
+
+
+import com.vm.policy.dto.UserDTO;
+import com.vm.policy.model.User;
+import org.springframework.web.bind.annotation.Mapping;
+
+@Mapper(componentModel = "spring")
+public interface UserMapper {
+
+    // Mapping from DTO to Entity (ignore password)
+    @Mapping(target = "password", ignore = true)
+    User toEntity(UserDTO dto);
+
+    // Mapping from Entity to DTO (ignore password)
+    @Mapping(target = "password", ignore = true)
+    UserDTO toDto(User entity);
+}
+
