@@ -1,0 +1,14 @@
+package com.vm.policy.service;
+
+import com.vm.policy.model.Policy;
+
+import java.util.List;
+
+public interface PolicyService {
+    void createPolicy(Policy policy);
+    Policy getPolicyById(Long id);
+    List<Policy> getAllPolicies();
+    List<Policy> getPoliciesByUser(Long userId);
+    Policy getPolicyWithClaims(Long policyId);
+
+}

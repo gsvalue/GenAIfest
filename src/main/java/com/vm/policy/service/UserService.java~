@@ -1,0 +1,13 @@
+package com.vm.policy.service;
+
+import com.vm.policy.dto.UserDTO;
+
+import java.util.List;
+
+public interface UserService {
+    void registerUser(UserDTO userDTO);
+    UserDTO getUserById(Long id);
+    List<UserDTO> getAllUsers();
+    void updateUser(Long id, UserDTO updatedUserDTO);
+    void deleteUser(Long id);
+}

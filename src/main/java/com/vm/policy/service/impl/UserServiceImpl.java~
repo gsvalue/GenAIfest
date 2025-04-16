@@ -1,0 +1,63 @@
+package com.vm.policy.service.impl;
+
+
+import com.vm.policy.dto.UserDTO;
+import com.vm.policy.repository.UserRepository;
+import com.vm.policy.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
+    @Override
+    public void registerUser(UserDTO userDTO) {
+        User user = userMapper.toEntity(userDTO);
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        return userRepository.findById(id)
+                .map(userMapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + id));
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateUser(Long id, UserDTO updatedUserDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        existingUser.setFullName(updatedUserDTO.getFullName());
+        existingUser.setEmail(updatedUserDTO.getEmail());
+        existingUser.setPhone(updatedUserDTO.getPhone());
+
+        userRepository.save(existingUser);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new EntityNotFoundException("User not found");
+        }
+        userRepository.deleteById(id);
+    }
+}
